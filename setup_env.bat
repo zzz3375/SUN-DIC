@@ -16,22 +16,25 @@ set PYTHON_VER=3.11
 
 REM --- detect conda -----------------------------------------------------------
 if not defined CONDA_PATH (
-    REM try PATH
-    where conda >nul 2>&1
-    if !errorlevel! equ 0 (
-        set CONDA_EXE=conda
-    ) else (
-        REM common install paths
-        if exist "%USERPROFILE%\anaconda3\Scripts\conda.exe" (
-            set CONDA_PATH=%USERPROFILE%\anaconda3
-        ) else if exist "%USERPROFILE%\miniconda3\Scripts\conda.exe" (
-            set CONDA_PATH=%USERPROFILE%\miniconda3
-        ) else if exist "C:\ProgramData\anaconda3\Scripts\conda.exe" (
-            set CONDA_PATH=C:\ProgramData\anaconda3
+    REM search common install paths
+    for %%d in (
+        "%USERPROFILE%\anaconda3"
+        "%USERPROFILE%\miniconda3"
+        "C:\ProgramData\anaconda3"
+    ) do (
+        if exist "%%~d\Scripts\conda.exe" (
+            set "CONDA_PATH=%%~d"
         )
     )
 )
-if defined CONDA_PATH set "CONDA_EXE=%CONDA_PATH%\Scripts\conda.exe"
+if defined CONDA_PATH (
+    set "CONDA_EXE=%CONDA_PATH%\Scripts\conda.exe"
+) else (
+    REM last resort: try PATH (use full .exe)
+    for /f "usebackq tokens=*" %%i in (`where conda 2^>nul`) do (
+        set "CONDA_EXE=%%i"
+    )
+)
 if not defined CONDA_EXE (
     echo ERROR: conda not found. Set CONDA_PATH or install Anaconda/Miniconda.
     exit /b 1
