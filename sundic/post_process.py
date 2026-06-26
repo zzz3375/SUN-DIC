@@ -434,10 +434,13 @@ def plotDispContour(resultsFile, imgPair, dispComp=DispComp.DISP_MAG,
     # Read the image to plot on and plot
     if plotImage:
         imgSet = sdic._getImageList_(settings.ImageFolder)
+        # When imgPair == -1, use the last analyzed pair.
+        # The target image for pair p is: DatumImage + (p + 1) * Increment
         if imgPair == -1:
-            imgPair = len(imgSet) - 1
+            numPairs = dataFile.DataFile.openReader(resultsFile).getNumImagePairs()
+            imgPair = settings.DatumImage + numPairs * settings.Increment
         else:
-            imgPair = imgPair + 1
+            imgPair = settings.DatumImage + (imgPair + 1) * settings.Increment
         img = sdic.readImage(imgSet[imgPair], normalize8Bit=True)
         ax.imshow(img, zorder=1, cmap='gray', vmin=0, vmax=255)
 
@@ -535,10 +538,13 @@ def plotStrainContour(resultsFile, imgPair, strainComp=StrainComp.VM_STRAIN,
     # Read the image to plot on and plot
     if plotImage:
         imgSet = sdic._getImageList_(settings.ImageFolder)
+        # When imgPair == -1, use the last analyzed pair.
+        # The target image for pair p is: DatumImage + (p + 1) * Increment
         if imgPair == -1:
-            imgPair = len(imgSet) - 1
+            numPairs = dataFile.DataFile.openReader(resultsFile).getNumImagePairs()
+            imgPair = settings.DatumImage + numPairs * settings.Increment
         else:
-            imgPair = imgPair + 1
+            imgPair = settings.DatumImage + (imgPair + 1) * settings.Increment
         img = sdic.readImage(imgSet[imgPair], normalize8Bit=True)
         ax.imshow(img, zorder=1, cmap='gray', vmin=0, vmax=255)
 
@@ -615,10 +621,13 @@ def plotZNCCContour(resultsFile, imgPair, alpha=0.75, plotImage=True, showPlot=T
     # Read the image to plot on and plot
     if plotImage:
         imgSet = sdic._getImageList_(settings.ImageFolder)
+        # When imgPair == -1, use the last analyzed pair.
+        # The target image for pair p is: DatumImage + (p + 1) * Increment
         if imgPair == -1:
-            imgPair = len(imgSet) - 1
+            numPairs = dataFile.DataFile.openReader(resultsFile).getNumImagePairs()
+            imgPair = settings.DatumImage + numPairs * settings.Increment
         else:
-            imgPair = imgPair + 1
+            imgPair = settings.DatumImage + (imgPair + 1) * settings.Increment
         img = sdic.readImage(imgSet[imgPair], normalize8Bit=True)
         ax.imshow(img, zorder=1, cmap='gray', vmin=0, vmax=255)
 

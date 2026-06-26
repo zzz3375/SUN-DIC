@@ -97,7 +97,10 @@ def _getImageList_(imgSubFolder, debugLevel=0):
     image_folder = os.path.join(os.getcwd(), imgSubFolder)
 
     # Get the filenames (naturally sorted) of all images in the directory
-    files = ns.os_sorted(os.listdir(image_folder))
+    # Filter to only include common image file extensions
+    _IMAGE_EXTENSIONS = {'.jpg', '.jpeg', '.png', '.bmp', '.tif', '.tiff', '.webp', '.jp2'}
+    files = [f for f in ns.os_sorted(os.listdir(image_folder))
+             if os.path.splitext(f)[1].lower() in _IMAGE_EXTENSIONS]
 
     # Add the directory back into the filename and store as a list of all files
     image_set = [os.path.join(image_folder, f) for f in files]
