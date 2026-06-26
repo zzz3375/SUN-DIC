@@ -189,8 +189,9 @@ centers defined by the mask (if enabled).""")
 
             try:
                 imageFolder = self.parent.settings.ImageFolder
-                files = os.listdir(imageFolder)
-                files = ns.os_sorted(files)
+                _IMAGE_EXTENSIONS = {'.jpg', '.jpeg', '.png', '.bmp', '.tif', '.tiff', '.webp', '.jp2'}
+                files = [f for f in ns.os_sorted(os.listdir(imageFolder))
+                         if os.path.splitext(f)[1].lower() in _IMAGE_EXTENSIONS]
                 roiImage = files[self.parent.settings.DatumImage]
                 imagePath = os.path.join(imageFolder, roiImage)
 
@@ -363,7 +364,9 @@ centers defined by the mask (if enabled).""")
         """
         try:
             imageFolder = self.parent.settings.ImageFolder
-            files = ns.os_sorted(os.listdir(imageFolder))
+            _IMAGE_EXTENSIONS = {'.jpg', '.jpeg', '.png', '.bmp', '.tif', '.tiff', '.webp', '.jp2'}
+            files = [f for f in ns.os_sorted(os.listdir(imageFolder))
+                     if os.path.splitext(f)[1].lower() in _IMAGE_EXTENSIONS]
             roiImage = files[self.parent.settings.DatumImage]
             firstImagePath = os.path.join(imageFolder, roiImage)
 

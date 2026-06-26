@@ -247,11 +247,10 @@ Starts from 1.""")
         self.blockSignals(True)
 
         try:
-            # Get all files in the image folder
-            files = os.listdir(self.folderDisp.text())
-
-            # Do a natural sort on the filenames and display them in the image list
-            files = ns.os_sorted(files)
+            # Get all image files in the image folder (filter by extension)
+            _IMAGE_EXTENSIONS = {'.jpg', '.jpeg', '.png', '.bmp', '.tif', '.tiff', '.webp', '.jp2'}
+            files = [f for f in ns.os_sorted(os.listdir(self.folderDisp.text()))
+                     if os.path.splitext(f)[1].lower() in _IMAGE_EXTENSIONS]
         except Exception as e:
             files = None
 
@@ -309,7 +308,9 @@ Starts from 1.""")
 
     def getNumImages(self):
         try:
-            files = os.listdir(self.folderDisp.text())
+            _IMAGE_EXTENSIONS = {'.jpg', '.jpeg', '.png', '.bmp', '.tif', '.tiff', '.webp', '.jp2'}
+            files = [f for f in os.listdir(self.folderDisp.text())
+                     if os.path.splitext(f)[1].lower() in _IMAGE_EXTENSIONS]
             return len(files)
         except Exception as e:
             return 2
